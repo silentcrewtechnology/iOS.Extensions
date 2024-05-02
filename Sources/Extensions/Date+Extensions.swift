@@ -40,3 +40,24 @@ extension Date {
         return Calendar.current.date(byAdding: DateComponents(month: 1), to: self.startOfMonth())
     }
 }
+
+extension Date {
+    func startOfMonth() -> Date {
+        return Calendar.current.date(from: Calendar.current.dateComponents(
+            [.year, .month],
+            from: Calendar.current.startOfDay(for: self))) ?? Date()
+    }
+    
+    func startOfWeek() -> Date {
+        let startOfWeek = Calendar(identifier: .gregorian)
+            .dateComponents(
+                [.calendar, .yearForWeekOfYear, .weekOfYear],
+                from: Calendar(identifier: .gregorian).startOfDay(for: self)
+            ).date ?? Date()
+        return Calendar(identifier: .gregorian).date(byAdding: .day, value: 1, to: startOfWeek) ?? Date()
+    }
+
+    func prevMonth() -> Date {
+        return Calendar.current.date(byAdding: DateComponents(month: -1), to: self.startOfMonth()) ?? Date()
+    }
+}

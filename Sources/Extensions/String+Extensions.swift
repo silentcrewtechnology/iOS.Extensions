@@ -11,11 +11,7 @@ public extension String {
         let attributedString = NSMutableAttributedString(string: self)
         return attributedString
     }
-    
-    func fontStyle(_ style: FontStyle) -> NSMutableAttributedString {
-        let styledString = attributed.fontStyle(style)
-        return styledString
-    }
+
 }
 
 extension StringProtocol {
@@ -24,17 +20,6 @@ extension StringProtocol {
 }
 
 extension String {
-    func stringByRemovingNonDigitCharacters() -> String {
-        return (self as NSString).bok_stringByRemovingNonDigitCharacters()
-    }
-    
-    func divideIntoSpaces(withInterval interval: NSInteger) -> String {
-        return (self as NSString).bok_divideIntoSpaces(withInterval: interval)
-    }
-
-    func trimmed() -> String {
-        return (self as NSString).bok_trimmed()
-    }
 
     var localized: String {
         return NSLocalizedString(self, comment: "")
@@ -111,13 +96,6 @@ extension String {
 extension String {
     func capitalizingFirstLetter() -> String {
         return prefix(1).capitalized + dropFirst()
-    }
-}
-
-extension String: StringRepresentable {
-
-    var stringRepresentation: String {
-        return self
     }
 }
 
