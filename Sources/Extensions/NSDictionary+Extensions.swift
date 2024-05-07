@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-extension NSDictionary {
+public extension NSDictionary {
     
     @objc func utf8Description() -> String {
         guard let data = try? JSONSerialization.data(withJSONObject: self, options: []) else { return "" }
@@ -16,7 +16,7 @@ extension NSDictionary {
     }
 }
 
-extension Dictionary where Key == NSAttributedString.Key, Value == Any {
+public extension Dictionary where Key == NSAttributedString.Key, Value == Any {
     
     static func foregroundColor(_ color: UIColor) -> Self {
         let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: color]

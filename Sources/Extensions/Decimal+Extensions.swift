@@ -1,10 +1,10 @@
 import Foundation
 
-protocol DecimalConvertible {
+public protocol DecimalConvertible {
     static func convertFrom(decimal: Decimal) -> Self
 }
 
-extension Decimal {
+public extension Decimal {
     
     func rounded(scale: Int, roundingMode: NSDecimalNumber.RoundingMode) -> Decimal {
         var result: Decimal = 0

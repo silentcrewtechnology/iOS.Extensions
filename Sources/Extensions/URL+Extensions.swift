@@ -1,6 +1,6 @@
 import Foundation
 
-extension URL {
+public extension URL {
     
     func appending(_ queryItem: String, value: String?) -> URL {
         return appending(URLQueryItem(name: queryItem, value: value))

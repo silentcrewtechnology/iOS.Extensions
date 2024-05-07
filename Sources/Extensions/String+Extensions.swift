@@ -14,12 +14,12 @@ public extension String {
 
 }
 
-extension StringProtocol {
+public extension StringProtocol {
     
     static var nonBreakingSpace: Self { "\u{00a0}" }
 }
 
-extension String {
+public extension String {
 
     var localized: String {
         return NSLocalizedString(self, comment: "")
@@ -93,13 +93,13 @@ extension String {
 }
 
 
-extension String {
+public extension String {
     func capitalizingFirstLetter() -> String {
         return prefix(1).capitalized + dropFirst()
     }
 }
 
-extension String {
+public extension String {
     func trimLeftToLast(element: Character) -> String {
         var string = self
         if let lastIndex = string.lastIndex(of: element) {
@@ -110,7 +110,7 @@ extension String {
     }
 }
 
-extension String {
+public extension String {
     
     func fromBase64() -> String? {
         guard let data = Data(base64Encoded: self) else {
@@ -125,7 +125,7 @@ extension String {
     }
 }
 
-extension String {
+public extension String {
     
     func width(height: CGFloat, font: UIFont) -> CGRect {
         let constraintRect = CGSize(
@@ -142,7 +142,7 @@ extension String {
     }
 }
 
-extension String {
+public extension String {
     /// Возвращает номер телефона в формате +7(000)0000000 при условии,
     /// что передается номер из 11 цифр(где первое число 8 или 7)
     /// или номер из 10 цифр(с отсутствующим кодом страны)
@@ -222,7 +222,7 @@ extension String {
     }
 }
 
-extension String {
+public extension String {
     
     func htmlAttributed(fontSizeForHTML: CGFloat,
                         fontSizeForTag: CGFloat,

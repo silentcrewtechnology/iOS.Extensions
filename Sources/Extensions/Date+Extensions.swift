@@ -1,6 +1,6 @@
 import Foundation
 
-extension Date {
+public extension Date {
     
     var isToday: Bool {
         return Calendar.current.isDateInToday(self)
@@ -41,7 +41,7 @@ extension Date {
     }
 }
 
-extension Date {
+public extension Date {
     func startOfMonth() -> Date {
         return Calendar.current.date(from: Calendar.current.dateComponents(
             [.year, .month],

@@ -8,7 +8,7 @@
 import Foundation
 
 extension Int: DecimalConvertible {
-    static func convertFrom(decimal: Decimal) -> Int {
+    public static func convertFrom(decimal: Decimal) -> Int {
         return NSDecimalNumber(decimal: decimal).intValue
     }
     
