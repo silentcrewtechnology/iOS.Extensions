@@ -1,6 +1,6 @@
 import Foundation
 
-extension Array {
+public extension Array {
 
     func at(index: Int) -> Array.Element? {
         guard index >= 0 && index <= count - 1 else { return nil }

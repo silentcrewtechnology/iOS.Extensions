@@ -1,6 +1,6 @@
 import Foundation
 
-extension NumberFormatter {
+public extension NumberFormatter {
     
     /// Форматтер для чисел без дробной части
     static let integerFormatter: NumberFormatter = {
