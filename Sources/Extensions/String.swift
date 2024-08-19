@@ -12,7 +12,6 @@ public extension String {
         let attributedString = NSMutableAttributedString(string: self)
         return attributedString
     }
-
 }
 
 public extension StringProtocol {
