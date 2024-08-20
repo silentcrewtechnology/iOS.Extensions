@@ -13,7 +13,9 @@ public extension UIView {
         with tableView: UITableView,
         with indexPath: IndexPath
     ) -> Self {
-        tableView.register(Self.self, forCellReuseIdentifier: String(describing: Self.self))
+        if tableView.dequeueReusableCell(withIdentifier: String(describing: Self.self)) == nil {
+            tableView.register(Self.self, forCellReuseIdentifier: String(describing: Self.self))
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: Self.self), for: indexPath)
         return cell as! Self
     }
