@@ -38,3 +38,24 @@ extension Decimal: LosslessStringConvertible {
         self = decimal
     }
 }
+
+extension Decimal {
+    
+    /// Строковое представление целой суммы / суммы с 2-мя знаками после запятой
+    var formattedAmount: String {
+        let formatter: NumberFormatter = self.rounded(scale: 0, roundingMode: .plain) == self
+        ? .integerFormatter
+        : .fractionSumFormatter
+        return formatter.string(from: self as NSDecimalNumber) ?? "\(self)"
+    }
+    
+    /// Строковое представление числа с 2-мя знаками после запятой
+    var formattedFractionAmount: String {
+        return NumberFormatter.fractionSumFormatter.string(from: self as NSDecimalNumber) ?? "\(self)"
+    }
+    
+    /// Строковое представление курса валюты с 2-6 знаками после запятой
+    var formattedRate: String {
+        return NumberFormatter.exchangeRateFormatter.string(from: self as NSDecimalNumber) ?? "\(self)"
+    }
+}

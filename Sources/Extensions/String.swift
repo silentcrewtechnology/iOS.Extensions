@@ -12,7 +12,20 @@ public extension String {
         let attributedString = NSMutableAttributedString(string: self)
         return attributedString
     }
+}
 
+extension String {
+    
+    func localizeReplacing(key: LocalizedValue = .value, string: String) -> String {
+        var result = self.localized
+        assert(result.contains(key.rawValue), "\(self.localized) not contains key '\(key)'")
+        result = result.replacingOccurrences(of: key.rawValue, with: string)
+        return result
+    }
+    
+    enum LocalizedValue: String {
+        case value = "{value}"
+    }
 }
 
 public extension StringProtocol {
