@@ -14,7 +14,7 @@ public extension String {
     }
 }
 
-extension String {
+public extension String {
     
     func localizeReplacing(key: LocalizedValue = .value, string: String) -> String {
         var result = self.localized
@@ -23,8 +23,46 @@ extension String {
         return result
     }
     
+    func localizeReplacing(_ replaceDictionary: [LocalizedValue: String]) -> String {
+        var result = self.localized
+        for (key, value) in replaceDictionary {
+            assert(result.contains(key.rawValue), "\(self.localized) not contains key '\(key.rawValue)'")
+            result = result.replacingOccurrences(of: key.rawValue, with: value)
+        }
+        return result
+    }
+
+    func localizeReplacing(
+        _ replaceDictionary: [LocalizedValue: (text: String, attributes: [NSAttributedString.Key: Any])]
+    ) -> NSAttributedString {
+        let result = NSMutableAttributedString(string: self.localized)
+        
+        for (key, value) in replaceDictionary {
+            if let range = result.string.range(of: key.rawValue) {
+                var nsRange = NSRange(range, in: result.string)
+                result.replaceCharacters(in: nsRange, with: value.text)
+                
+                nsRange.length = value.text.count
+                result.addAttributes(value.attributes, range: nsRange)
+            } else {
+                assertionFailure("\(self.localized) not contains key '\(key.rawValue)'")
+            }
+        }
+        return result
+    }
+    
     enum LocalizedValue: String {
         case value = "{value}"
+        case value1 = "{value1}"
+        case value2 = "{value2}"
+        case value3 = "{value3}"
+        case value4 = "{value4}"
+        case value5 = "{value5}"
+        case value6 = "{value6}"
+        case value7 = "{value7}"
+        case value8 = "{value8}"
+        case value9 = "{value9}"
+        case value10 = "{value10}"
     }
 }
 
@@ -43,7 +81,9 @@ public extension String {
         return self.lowercased().filter({ $0 != " " })
     }
     
-    func localizeReplacing(_ replaceDictionary: [String: String]) -> String {
+    func localizeReplacing(
+        _ replaceDictionary: [String: String]
+    ) -> String {
         var result = self.localized
         for (key, value) in replaceDictionary {
             assert(result.contains(key), "\(self.localized) not contains key '\(key)'")
@@ -52,7 +92,9 @@ public extension String {
         return result
     }
     
-    func localizeReplacing(_ replaceDictionary: [String: (text: String, attributes: [NSAttributedString.Key: Any])]) -> NSAttributedString {
+    func localizeReplacing(
+        _ replaceDictionary: [String: (text: String, attributes: [NSAttributedString.Key: Any])]
+    ) -> NSAttributedString {
         let result = NSMutableAttributedString(string: self.localized)
         
         for (key, value) in replaceDictionary {

@@ -39,7 +39,7 @@ extension Decimal: LosslessStringConvertible {
     }
 }
 
-extension Decimal {
+public extension Decimal {
     
     /// Строковое представление целой суммы / суммы с 2-мя знаками после запятой
     var formattedAmount: String {
