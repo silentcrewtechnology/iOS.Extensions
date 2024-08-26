@@ -11,8 +11,10 @@ extension Int: DecimalConvertible {
     public static func convertFrom(decimal: Decimal) -> Int {
         return NSDecimalNumber(decimal: decimal).intValue
     }
-    
-    func toString() -> String {
+}
+
+public extension Int {
+     func toString() -> String {
         return String(self)
     }
 }
