@@ -83,6 +83,37 @@ public extension String {
         return result
     }
     
+    func localizeReplacing(
+        _ replaceDictionary: [String: String]
+    ) -> String {
+        var result = self.localized
+        for (key, value) in replaceDictionary {
+            assert(result.contains(key), "\(self.localized) not contains key '\(key)'")
+            result = result.replacingOccurrences(of: key, with: value)
+        }
+        return result
+    }
+    
+    func localizeReplacing(
+        _ replaceDictionary: [String: (text: String, attributes: [NSAttributedString.Key: Any])]
+    ) -> NSAttributedString {
+        let result = NSMutableAttributedString(string: self.localized)
+        
+        for (key, value) in replaceDictionary {
+            if let range = result.string.range(of: key) {
+                var nsRange = NSRange(range, in: result.string)
+                result.replaceCharacters(in: nsRange, with: value.text)
+                
+                nsRange.length = value.text.count
+                result.addAttributes(value.attributes, range: nsRange)
+            } else {
+                assertionFailure("\(self.localized) not contains key '\(key)'")
+            }
+        }
+        
+        return result
+    }
+    
     func lowercasedWithoutSpaces() -> String {
         return self.lowercased().filter({ $0 != " " })
     }
