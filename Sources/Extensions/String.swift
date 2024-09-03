@@ -1,20 +1,52 @@
 import UIKit
 import CryptoKit
+import Foundation
 
 public extension String {
     
-    func fullRange() -> NSRange {
-        let range = (self as NSString).range(of: self)
-        return range
+    static var nonBreakingSpace: Self { "\u{00a0}" }
+    
+    enum LocalizedValue: String {
+        case value = "{value}"
+        case value1 = "{value1}"
+        case value2 = "{value2}"
+        case value3 = "{value3}"
+        case value4 = "{value4}"
+        case value5 = "{value5}"
+        case value6 = "{value6}"
+        case value7 = "{value7}"
+        case value8 = "{value8}"
+        case value9 = "{value9}"
+        case value10 = "{value10}"
     }
     
     var attributed: NSMutableAttributedString {
         let attributedString = NSMutableAttributedString(string: self)
         return attributedString
     }
-}
-
-public extension String {
+    
+    var localized: String {
+        return NSLocalizedString(self, comment: "")
+    }
+    
+    var sha1Base64: String {
+        guard let data = data(using: .utf8) else { return "" }
+        return Data(Insecure.SHA1.hash(data: data)).base64EncodedString()
+    }
+    
+    var sha256Base64: String {
+        guard let data = data(using: .utf8) else { return "" }
+        return Data(SHA256.hash(data: data)).base64EncodedString()
+    }
+    
+    func moduleLocalized(module: Bundle) -> String {
+        return NSLocalizedString(self, bundle: module, comment: "")
+    }
+    
+    func fullRange() -> NSRange {
+        let range = (self as NSString).range(of: self)
+        return range
+    }
     
     func localizeReplacing(key: LocalizedValue = .value, string: String) -> String {
         var result = self.localized
@@ -51,65 +83,8 @@ public extension String {
         return result
     }
     
-    enum LocalizedValue: String {
-        case value = "{value}"
-        case value1 = "{value1}"
-        case value2 = "{value2}"
-        case value3 = "{value3}"
-        case value4 = "{value4}"
-        case value5 = "{value5}"
-        case value6 = "{value6}"
-        case value7 = "{value7}"
-        case value8 = "{value8}"
-        case value9 = "{value9}"
-        case value10 = "{value10}"
-    }
-}
-
-public extension StringProtocol {
-    
-    static var nonBreakingSpace: Self { "\u{00a0}" }
-}
-
-public extension String {
-
-    var localized: String {
-        return NSLocalizedString(self, comment: "")
-    }
-    
     func lowercasedWithoutSpaces() -> String {
         return self.lowercased().filter({ $0 != " " })
-    }
-    
-    func localizeReplacing(
-        _ replaceDictionary: [String: String]
-    ) -> String {
-        var result = self.localized
-        for (key, value) in replaceDictionary {
-            assert(result.contains(key), "\(self.localized) not contains key '\(key)'")
-            result = result.replacingOccurrences(of: key, with: value)
-        }
-        return result
-    }
-    
-    func localizeReplacing(
-        _ replaceDictionary: [String: (text: String, attributes: [NSAttributedString.Key: Any])]
-    ) -> NSAttributedString {
-        let result = NSMutableAttributedString(string: self.localized)
-        
-        for (key, value) in replaceDictionary {
-            if let range = result.string.range(of: key) {
-                var nsRange = NSRange(range, in: result.string)
-                result.replaceCharacters(in: nsRange, with: value.text)
-                
-                nsRange.length = value.text.count
-                result.addAttributes(value.attributes, range: nsRange)
-            } else {
-                assertionFailure("\(self.localized) not contains key '\(key)'")
-            }
-        }
-        
-        return result
     }
     
     func boolValue() -> Bool {
@@ -146,16 +121,11 @@ public extension String {
         let decimal = NumberFormatter.fractionSumFormatter.number(from: self)
         return decimal?.decimalValue
     }
-}
 
-
-public extension String {
     func capitalizingFirstLetter() -> String {
         return prefix(1).capitalized + dropFirst()
     }
-}
 
-public extension String {
     func trimLeftToLast(element: Character) -> String {
         var string = self
         if let lastIndex = string.lastIndex(of: element) {
@@ -164,10 +134,7 @@ public extension String {
         }
         return self
     }
-}
 
-public extension String {
-    
     func fromBase64() -> String? {
         guard let data = Data(base64Encoded: self) else {
             return nil
@@ -179,10 +146,7 @@ public extension String {
     func toBase64() -> String {
         return Data(self.utf8).base64EncodedString()
     }
-}
 
-public extension String {
-    
     func width(height: CGFloat, font: UIFont) -> CGRect {
         let constraintRect = CGSize(
             width: .greatestFiniteMagnitude,
@@ -196,9 +160,7 @@ public extension String {
         )
         return rect
     }
-}
 
-public extension String {
     /// Возвращает номер телефона в формате +7(000)0000000 при условии,
     /// что передается номер из 11 цифр(где первое число 8 или 7)
     /// или номер из 10 цифр(с отсутствующим кодом страны)
@@ -276,14 +238,13 @@ public extension String {
         }
         return result
     }
-}
 
-public extension String {
-    
-    func htmlAttributed(fontSizeForHTML: CGFloat,
-                        fontSizeForTag: CGFloat,
-                        color: String,
-                        lineHeight: CGFloat = 20) -> NSAttributedString? {
+    func htmlAttributed(
+        fontSizeForHTML: CGFloat,
+        fontSizeForTag: CGFloat,
+        color: String,
+        lineHeight: CGFloat = 20
+    ) -> NSAttributedString? {
         do {
             let htmlCSString = "<style>" +
             "html * {" +
@@ -300,25 +261,15 @@ public extension String {
                 return nil
             }
             
-            return try NSAttributedString(data: data,
-                                          options: [.documentType: NSAttributedString.DocumentType.html,
-                                                    .characterEncoding: String.Encoding.utf8.rawValue],
-                                          documentAttributes: nil)
+            return try NSAttributedString(
+                data: data,
+                options: [
+                    .documentType: NSAttributedString.DocumentType.html,
+                    .characterEncoding: String.Encoding.utf8.rawValue
+                ],
+                documentAttributes: nil)
         } catch {
             return nil
         }
-    }
-}
-
-public extension String {
-    
-    var sha1Base64: String {
-        guard let data = data(using: .utf8) else { return "" }
-        return Data(Insecure.SHA1.hash(data: data)).base64EncodedString()
-    }
-    
-    var sha256Base64: String {
-        guard let data = data(using: .utf8) else { return "" }
-        return Data(SHA256.hash(data: data)).base64EncodedString()
     }
 }
